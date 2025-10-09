@@ -7,12 +7,7 @@ import java.util.ArrayList;
 
 @Entity
 @Table(name = "docteur")
-public class Docteur {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "iddocteur")
-    private int idDocteur;
+public class Docteur extends Personne{
 
     @Column(columnDefinition = "TEXT")
     private String specialite;
@@ -23,8 +18,8 @@ public class Docteur {
 
     private ArrayList<Consultation> planning;
 
-    public Docteur(int idDocteur, String specialite, Departement departement, ArrayList<Consultation> planning) {
-        this.idDocteur = idDocteur;
+    public Docteur(int id, String nom, String prenom, String email, String mdp, String specialite, Departement departement, ArrayList<Consultation> planning) {
+        super(id, nom, prenom, email, mdp);
         this.specialite = specialite;
         this.departement = departement;
         this.planning = planning;
@@ -38,14 +33,6 @@ public class Docteur {
         this.planning = planning;
     }
 
-
-    public int getIdDocteur() {
-        return idDocteur;
-    }
-
-    public void setIdDocteur(int idDocteur) {
-        this.idDocteur = idDocteur;
-    }
 
     public String getSpecialite() {
         return specialite;

@@ -10,11 +10,7 @@ import java.util.ArrayList;
 
 @Entity
 @Table(name = "Patient")
-public class Patient {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idPatient;
+public class Patient extends Personne{
 
     @Column(nullable = false)
     private float poid;
@@ -24,19 +20,15 @@ public class Patient {
 
     private ArrayList<Consultation> consultations;
 
-    public Patient(int idPatient, float poid, float taille, ArrayList<Consultation> consultations) {
-        this.idPatient = idPatient;
+    public Patient(int id, String nom, String prenom, String email, String mdp, float poid, float taille, ArrayList<Consultation> consultations) {
+        super(id, nom, prenom, email, mdp);
         this.poid = poid;
         this.taille = taille;
         this.consultations = consultations;
     }
 
-    public int getIdPatient() {
-        return idPatient;
-    }
+    public Patient() {
 
-    public void setIdPatient(int idPatient) {
-        this.idPatient = idPatient;
     }
 
     public float getPoid() {

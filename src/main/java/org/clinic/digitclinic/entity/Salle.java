@@ -9,14 +9,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Salle")
+@Table(name = "salle")
 public class Salle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idsalle")
     private int idSalle;
 
-    @Column(nullable = false)
+    @Column(name = "nomsalle", nullable = false)
     private String nomSalle;
 
     @Column(nullable = false)
@@ -35,6 +36,15 @@ public class Salle {
         this.nomSalle = nomSalle;
         this.capacite = capacite;
         this.creneau = creneau;
+    }
+
+    public Salle(String nomSalle, int capacite) {
+        this.nomSalle = nomSalle;
+        this.capacite = capacite;
+    }
+
+    public Salle() {
+
     }
 
     public int getIdSalle() {

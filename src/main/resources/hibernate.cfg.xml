@@ -19,6 +19,16 @@
         <property name="hibernate.format_sql">true</property>
 
         <mapping class="org.clinic.digitclinic.entity.Personne"/>
+        <mapping class="org.clinic.digitclinic.entity.Salle"/>
+        <mapping class="org.clinic.digitclinic.entity.Departement"/>
+        <mapping class="org.clinic.digitclinic.entity.Patient"/>
+        <mapping class="org.clinic.digitclinic.entity.Docteur"/>
+        <mapping class="org.clinic.digitclinic.entity.Consultation"/>
+
+
+
+
+
 
     </session-factory>
 </hibernate-configuration>

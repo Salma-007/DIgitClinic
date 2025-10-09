@@ -1,13 +1,9 @@
 package org.clinic.digitclinic.entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "personne")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Personne {
 
     @Id
