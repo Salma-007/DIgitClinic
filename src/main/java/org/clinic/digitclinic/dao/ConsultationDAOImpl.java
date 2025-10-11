@@ -1,5 +1,6 @@
 package org.clinic.digitclinic.dao;
 
+import org.clinic.digitclinic.dao.interfaces.ConsultationDAO;
 import org.clinic.digitclinic.entity.Consultation;
 import org.clinic.digitclinic.util.HibernateUtil;
 import org.hibernate.Session;

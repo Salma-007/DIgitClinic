@@ -1,4 +1,4 @@
-package org.clinic.digitclinic.dao;
+package org.clinic.digitclinic.dao.interfaces;
 
 import java.util.List;
 

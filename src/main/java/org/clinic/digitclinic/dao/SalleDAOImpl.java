@@ -1,5 +1,6 @@
 package org.clinic.digitclinic.dao;
 
+import org.clinic.digitclinic.dao.interfaces.SalleDAO;
 import org.clinic.digitclinic.entity.Salle;
 
 public class SalleDAOImpl extends GenericDAOImpl<Salle> implements SalleDAO {

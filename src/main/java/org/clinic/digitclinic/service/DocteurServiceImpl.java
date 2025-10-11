@@ -1,9 +1,41 @@
 package org.clinic.digitclinic.service;
 
+import org.clinic.digitclinic.dao.interfaces.DocteurDAO;
 import org.clinic.digitclinic.entity.Docteur;
+import org.clinic.digitclinic.service.interfaces.DocteurService;
 
-public class DocteurServiceImpl extends GenericServiceImpl<Docteur> implements DocteurService{
-    public DocteurServiceImpl() {
-        super(Docteur.class);
+import java.util.List;
+
+public class DocteurServiceImpl implements DocteurService {
+    private DocteurDAO dao ;
+
+    public DocteurServiceImpl(DocteurDAO dao){
+        this.dao = dao;
+    }
+
+
+    @Override
+    public void save(Docteur doc) {
+        dao.save(doc);
+    }
+
+    @Override
+    public void update(Docteur doc) {
+        dao.update(doc);
+    }
+
+    @Override
+    public void delete(Long id) {
+        dao.delete(id);
+    }
+
+    @Override
+    public Docteur findById(Long id) {
+        return dao.findById(id);
+    }
+
+    @Override
+    public List<Docteur> findAll() {
+        return dao.findAll();
     }
 }

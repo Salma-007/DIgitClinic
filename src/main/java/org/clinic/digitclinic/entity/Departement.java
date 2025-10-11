@@ -1,10 +1,5 @@
 package org.clinic.digitclinic.entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +15,7 @@ public class Departement {
     @Column(nullable = false)
     private String nom;
 
+    @OneToMany(mappedBy = "departement", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ArrayList<Docteur> docteurs;
 
     public Departement(int id, String nom) {

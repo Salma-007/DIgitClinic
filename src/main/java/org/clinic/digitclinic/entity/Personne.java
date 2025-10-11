@@ -1,5 +1,6 @@
 package org.clinic.digitclinic.entity;
 import jakarta.persistence.*;
+import org.clinic.digitclinic.entity.enums.Role;
 
 @Entity
 @Table(name = "personne")
@@ -22,24 +23,34 @@ public class Personne {
     @Column(nullable = false)
     private String motDePasse;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
 
     public Personne(){
 
     }
 
-    public Personne(int id, String nom, String prenom, String email, String mdp){
+    public Personne(int id, String nom, String prenom, String email, String mdp, Role role){
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.motDePasse = mdp;
+        this.role = role;
     }
 
-    public Personne( String nom, String prenom, String email, String mdp){
+    public Personne(String nom, String prenom, String email, String mdp, Role role){
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.motDePasse = mdp;
+        this.role = role;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public int getId() {
@@ -81,4 +92,5 @@ public class Personne {
     public void setMdp(String mdp) {
         this.motDePasse = mdp;
     }
+
 }

@@ -3,6 +3,8 @@ package org.clinic.digitclinic.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
+import org.clinic.digitclinic.entity.enums.Role;
+
 import java.util.ArrayList;
 
 @Entity
@@ -19,7 +21,7 @@ public class Docteur extends Personne{
     private ArrayList<Consultation> planning;
 
     public Docteur(int id, String nom, String prenom, String email, String mdp, String specialite, Departement departement, ArrayList<Consultation> planning) {
-        super(id, nom, prenom, email, mdp);
+        super(id, nom, prenom, email, mdp, Role.DOCTEUR);
         this.specialite = specialite;
         this.departement = departement;
         this.planning = planning;

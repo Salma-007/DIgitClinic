@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
+import org.clinic.digitclinic.entity.enums.Role;
 
 import java.util.ArrayList;
 
@@ -21,10 +22,16 @@ public class Patient extends Personne{
     private ArrayList<Consultation> consultations;
 
     public Patient(int id, String nom, String prenom, String email, String mdp, float poid, float taille, ArrayList<Consultation> consultations) {
-        super(id, nom, prenom, email, mdp);
+        super(id, nom, prenom, email, mdp, Role.PATIENT);
         this.poid = poid;
         this.taille = taille;
         this.consultations = consultations;
+    }
+
+    public Patient(String nom, String prenom, String email, String mdp, float poid, float taille) {
+        super(nom, prenom, email, mdp, Role.PATIENT);
+        this.poid = poid;
+        this.taille = taille;
     }
 
     public Patient() {
