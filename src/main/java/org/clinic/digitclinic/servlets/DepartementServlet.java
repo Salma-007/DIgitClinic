@@ -146,7 +146,6 @@ public class DepartementServlet extends HelloServlet {
         response.sendRedirect(contextPath + "/departements?success=Département ajouté");
     }
 
-    // Modifier un département
     private void updateDepartement(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
