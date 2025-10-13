@@ -5,15 +5,18 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import org.clinic.digitclinic.dao.interfaces.DepartementDAO;
 import org.clinic.digitclinic.entity.Departement;
+import org.clinic.digitclinic.entity.Docteur;
 import org.clinic.digitclinic.service.interfaces.DepartementService;
-import jakarta.annotation.security.RolesAllowed;
 import java.util.List;
 
 
 public class DepartementServiceImpl implements DepartementService {
 
-    @Inject
     private DepartementDAO departementDAO;
+
+    public DepartementServiceImpl(DepartementDAO dao){
+        this.departementDAO = dao;
+    }
 
     @Override
     public void save(Departement p) {
@@ -38,5 +41,15 @@ public class DepartementServiceImpl implements DepartementService {
     @Override
     public List<Departement> findAll() {
         return departementDAO.findAll();
+    }
+
+    @Override
+    public Departement findByNom(String nom) {
+        return departementDAO.findByNom(nom);
+    }
+
+    @Override
+    public List<Docteur> findByDepartementId(Long departementId) {
+        return departementDAO.findByDepartementId(departementId);
     }
 }

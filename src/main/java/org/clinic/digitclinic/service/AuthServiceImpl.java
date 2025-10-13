@@ -21,8 +21,6 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Email ou mot de passe incorrect");
         }
 
-        // Exemple de logique supplémentaire (si besoin)
-        // if (!user.isActif()) throw new RuntimeException("Compte désactivé");
 
         return user;
     }

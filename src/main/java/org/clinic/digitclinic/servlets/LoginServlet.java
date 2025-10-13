@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpSession;
 import org.clinic.digitclinic.entity.Personne;
 import org.clinic.digitclinic.service.AuthServiceImpl;
 import org.clinic.digitclinic.service.interfaces.AuthService;
-
 import java.io.IOException;
 
 @WebServlet(name = "login",value = "/login")
@@ -37,10 +36,9 @@ public class LoginServlet extends HttpServlet {
             switch (user.getRole()) {
                 case ADMIN -> response.sendRedirect("views/admin/dashboard.jsp");
                 case DOCTEUR -> response.sendRedirect("views/login.jsp");
-                case PATIENT -> response.sendRedirect("views/patient/home.jsp");
+                case PATIENT -> response.sendRedirect(request.getContextPath() + "/patient/home");
                 default -> response.sendRedirect("index.jsp");
             }
-
         } catch (RuntimeException e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/views/login.jsp").forward(request, response);

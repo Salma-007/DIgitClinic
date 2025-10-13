@@ -2,6 +2,7 @@ package org.clinic.digitclinic.servlets;
 
 import java.io.*;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
@@ -9,7 +10,7 @@ import jakarta.servlet.annotation.*;
 public class HelloServlet extends HttpServlet {
     private String message = "HELLO HHHHHHHHH !";
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
 
         // Hello

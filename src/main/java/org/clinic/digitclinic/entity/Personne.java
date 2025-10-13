@@ -93,4 +93,15 @@ public class Personne {
         this.motDePasse = mdp;
     }
 
+    public String getMotDePasse() {
+        return motDePasse;
+    }
+
+    public void setMotDePasse(String motDePasse) {
+        this.motDePasse = motDePasse;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

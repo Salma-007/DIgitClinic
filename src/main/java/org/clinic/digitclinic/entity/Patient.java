@@ -61,4 +61,10 @@ public class Patient extends Personne{
     public void setConsultations(ArrayList<Consultation> consultations) {
         this.consultations = consultations;
     }
+
+    public int getConsultationsCount() {
+        return consultations != null ? consultations.size() : 0;
+    }
+
+
 }

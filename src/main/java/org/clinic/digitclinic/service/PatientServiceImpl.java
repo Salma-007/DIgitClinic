@@ -2,9 +2,11 @@ package org.clinic.digitclinic.service;
 
 import org.clinic.digitclinic.dao.interfaces.PatientDAO;
 import org.clinic.digitclinic.entity.Patient;
+import org.clinic.digitclinic.entity.Personne;
 import org.clinic.digitclinic.service.interfaces.PatientService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PatientServiceImpl implements PatientService {
 
@@ -34,7 +36,14 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<Patient> findAll() {
-        return dao.findAll();
+    public List<Patient> findAllPatients() {
+        List<? extends Personne> personnes = dao.findAll();
+        List<Patient> patients = personnes.stream()
+                .filter(personne -> "PATIENT".equalsIgnoreCase(personne.getRole().toString()))
+                .map(personne -> (Patient) personne)
+                .collect(Collectors.toList());
+        return patients;
     }
+
+
 }
