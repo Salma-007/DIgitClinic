@@ -32,12 +32,11 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("user", user);
             session.setAttribute("role", user.getRole().toString());
 
-            // Redirection selon rôle
             switch (user.getRole()) {
-                case ADMIN -> response.sendRedirect("views/admin/dashboard.jsp");
+                case ADMIN -> response.sendRedirect(request.getContextPath() + "/dashboard-admin");
                 case DOCTEUR -> response.sendRedirect("views/login.jsp");
                 case PATIENT -> response.sendRedirect(request.getContextPath() + "/patient/home");
-                default -> response.sendRedirect("index.jsp");
+                default -> response.sendRedirect("views/login.jsp");
             }
         } catch (RuntimeException e) {
             request.setAttribute("error", e.getMessage());

@@ -14,7 +14,7 @@ public class Docteur extends Personne{
     @Column(columnDefinition = "TEXT")
     private String specialite;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "iddepartement", nullable = false)
     private Departement departement;
 
@@ -29,12 +29,12 @@ public class Docteur extends Personne{
 
     public Docteur(){}
 
-    public Docteur(String specialite, Departement departement, ArrayList<Consultation> planning) {
+    public Docteur(String nom, String prenom, String email, String mdp,String specialite, Departement departement, ArrayList<Consultation> planning) {
+        super(nom, prenom, email, mdp, Role.DOCTEUR);
         this.specialite = specialite;
         this.departement = departement;
         this.planning = planning;
     }
-
 
     public String getSpecialite() {
         return specialite;

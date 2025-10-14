@@ -16,6 +16,7 @@ public class DocteurServiceImpl implements DocteurService {
 
     @Override
     public void save(Docteur doc) {
+        System.out.println(doc.getRole().name());
         dao.save(doc);
     }
 
@@ -37,5 +38,10 @@ public class DocteurServiceImpl implements DocteurService {
     @Override
     public List<Docteur> findAll() {
         return dao.findAll();
+    }
+
+    @Override
+    public Docteur findByEmail(String email) {
+        return dao.findByEmail(email);
     }
 }

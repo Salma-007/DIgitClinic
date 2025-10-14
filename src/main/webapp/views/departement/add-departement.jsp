@@ -269,7 +269,6 @@
       </div>
     </div>
 
-    <!-- Formulaire SIMPLIFIÉ (seulement le nom) -->
     <div class="form-container">
       <form action="departements" method="post">
         <input type="hidden" name="action" value="add">

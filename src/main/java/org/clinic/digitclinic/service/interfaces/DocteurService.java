@@ -10,4 +10,5 @@ public interface DocteurService {
     void delete(Long id);
     Docteur findById(Long id);
     List<Docteur> findAll();
+    Docteur findByEmail(String email);
 }

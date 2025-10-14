@@ -53,7 +53,6 @@ public class AdminDashboardServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // Récupérer les statistiques
             Map<String, Object> stats = new HashMap<>();
             stats.put("totalPatients", patientService.findAllPatients().size());
             stats.put("totalDocteurs", docteurService.findAll().size());
