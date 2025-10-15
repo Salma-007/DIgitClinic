@@ -347,7 +347,7 @@
             <h1>Digit<span>Clinic</span></h1>
         </div>
         <ul class="nav-links">
-            <li><a href="dashboard-admin.jsp"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="dashboard-admin"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="patients"><i class="fas fa-user-injured"></i> Patients</a></li>
             <li><a href="docteurs" class="active"><i class="fas fa-user-md"></i> Médecins</a></li>
             <li><a href="departements"><i class="fas fa-building"></i> Départements</a></li>

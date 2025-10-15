@@ -32,15 +32,15 @@ public class Consultation {
     @Column(columnDefinition = "TEXT")
     private String compteRendu;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idpatient", nullable = false)
     private Patient patient;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "iddocteur", nullable = false)
     private Docteur docteur;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idsalle", nullable = false)
     private Salle salle;
 

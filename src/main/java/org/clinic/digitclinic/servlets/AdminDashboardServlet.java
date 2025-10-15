@@ -14,6 +14,7 @@ import org.clinic.digitclinic.dao.interfaces.ConsultationDAO;
 import org.clinic.digitclinic.dao.interfaces.DepartementDAO;
 import org.clinic.digitclinic.dao.interfaces.DocteurDAO;
 import org.clinic.digitclinic.dao.interfaces.PatientDAO;
+import org.clinic.digitclinic.entity.Consultation;
 import org.clinic.digitclinic.entity.Patient;
 import org.clinic.digitclinic.service.ConsultationServiceImpl;
 import org.clinic.digitclinic.service.DepartementServiceImpl;
@@ -51,7 +52,6 @@ public class AdminDashboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         try {
             Map<String, Object> stats = new HashMap<>();
             stats.put("totalPatients", patientService.findAllPatients().size());
@@ -59,9 +59,10 @@ public class AdminDashboardServlet extends HttpServlet {
             stats.put("totalDepartements", departementService.findAll().size());
             stats.put("totalConsultations", consultationService.findAll().size());
 
-            // Récupérer la liste des patients
+            List<Consultation> consultations = consultationService.findAll();
             List<Patient> patients = patientService.findAllPatients();
 
+            request.setAttribute("consultations", consultations);
             request.setAttribute("stats", stats);
             request.setAttribute("patients", patients);
 

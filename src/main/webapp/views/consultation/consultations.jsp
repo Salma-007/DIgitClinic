@@ -1,13 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Clinique Digitale</title>
+    <title>Gestion des Consultations - Clinique Digitale</title>
     <style>
-        /* Reset et variables */
         :root {
             --primary: #3498db;
             --secondary: #2c3e50;
@@ -31,13 +31,11 @@
             min-height: 100vh;
         }
 
-        /* Layout principal */
         .admin-container {
             display: flex;
             min-height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
             background: var(--secondary);
@@ -91,7 +89,6 @@
             font-size: 1.2rem;
         }
 
-        /* Contenu principal */
         .main-content {
             flex: 1;
             padding: 20px;
@@ -105,7 +102,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 30px;
             display: flex;
-            justify-content: space-between; /* CORRIGÉ : between → space-between */
+            justify-content: space-between;
             align-items: center;
         }
 
@@ -132,7 +129,6 @@
             font-weight: bold;
         }
 
-        /* Cartes de statistiques */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -153,10 +149,11 @@
             transform: translateY(-5px);
         }
 
-        .stat-card.patients { border-top: 4px solid #3498db; }
-        .stat-card.doctors { border-top: 4px solid #27ae60; }
-        .stat-card.consultations { border-top: 4px solid #e74c3c; }
-        .stat-card.departments { border-top: 4px solid #f39c12; }
+        .stat-card.total { border-top: 4px solid #3498db; }
+        .stat-card.reservees { border-top: 4px solid #f39c12; }
+        .stat-card.validees { border-top: 4px solid #17a2b8; }
+        .stat-card.terminees { border-top: 4px solid #27ae60; }
+        .stat-card.annulees { border-top: 4px solid #e74c3c; }
 
         .stat-number {
             font-size: 2.5rem;
@@ -172,7 +169,6 @@
             letter-spacing: 1px;
         }
 
-        /* Tableau */
         .content-card {
             background: white;
             border-radius: 10px;
@@ -183,7 +179,7 @@
 
         .table-header {
             display: flex;
-            justify-content: space-between; /* CORRIGÉ : between → space-between */
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
@@ -226,6 +222,16 @@
             color: white;
         }
 
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -252,19 +258,26 @@
         }
 
         .badge {
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .badge-success { background: #d4edda; color: #155724; }
-        .badge-warning { background: #fff3cd; color: #856404; }
-        .badge-danger { background: #f8d7da; color: #721c24; }
+        .badge-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .badge-warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .badge-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .badge-primary { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .badge-info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .badge-secondary { background: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; }
 
         .actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .action-btn {
@@ -275,7 +288,72 @@
             font-size: 0.8rem;
         }
 
-        /* Responsive */
+        .consultation-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .consultation-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .consultation-details {
+            flex: 1;
+        }
+
+        .consultation-title {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .consultation-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+
+        .consultation-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .consultation-participants {
+            margin-top: 8px;
+        }
+
+        .participant-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #e9ecef;
+        }
+
+        .date-badge {
+            background: #e8f4fd;
+            color: #0d6efd;
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         @media (max-width: 768px) {
             .admin-container {
                 flex-direction: column;
@@ -295,6 +373,20 @@
                 gap: 15px;
                 align-items: flex-start;
             }
+
+            .consultation-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .consultation-meta {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
         }
     </style>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -307,11 +399,11 @@
             <h1>Digit<span>Clinic</span></h1>
         </div>
         <ul class="nav-links">
-            <li><a href="dashboard-admin" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="dashboard-admin"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="patients"><i class="fas fa-user-injured"></i> Patients</a></li>
             <li><a href="docteurs"><i class="fas fa-user-md"></i> Médecins</a></li>
             <li><a href="departements"><i class="fas fa-building"></i> Départements</a></li>
-            <li><a href="consultations"><i class="fas fa-calendar-check"></i> Consultations</a></li>
+            <li><a href="consultations" class="active"><i class="fas fa-calendar-check"></i> Consultations</a></li>
             <li><a href="salles"><i class="fas fa-door-open"></i> Salles</a></li>
             <li><a href="statistiques"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
             <li><a href="logout" style="color: var(--danger);"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
@@ -322,7 +414,7 @@
     <main class="main-content">
         <!-- Header -->
         <div class="header">
-            <h2><i class="fas fa-tachometer-alt"></i> Tableau de Bord Administrateur</h2>
+            <h2><i class="fas fa-calendar-check"></i> Gestion des Consultations</h2>
             <div class="user-info">
                 <div class="user-avatar">A</div>
                 <span>Administrateur</span>
@@ -331,134 +423,181 @@
 
         <!-- Cartes de statistiques -->
         <div class="stats-grid">
-            <div class="stat-card patients">
-                <span class="stat-number">
-                    <c:choose>
-                        <c:when test="${not empty stats.totalPatients}">${stats.totalPatients}</c:when>
-                        <c:otherwise>0</c:otherwise>
-                    </c:choose>
-                </span>
-                <span class="stat-label">Patients</span>
-                <i class="fas fa-user-injured" style="font-size: 2rem; color: skyblue; margin-top: 10px;"></i>
-            </div>
-            <div class="stat-card doctors">
-                <span class="stat-number">
-                    <c:choose>
-                        <c:when test="${not empty stats.totalDocteurs}">${stats.totalDocteurs}</c:when>
-                        <c:otherwise>0</c:otherwise>
-                    </c:choose>
-                </span>
-                <span class="stat-label">Médecins</span>
-                <i class="fas fa-user-md" style="font-size: 2rem; color: #27ae60; margin-top: 10px;"></i>
-            </div>
-            <div class="stat-card consultations">
+            <div class="stat-card total">
                 <span class="stat-number">
                     <c:choose>
                         <c:when test="${not empty stats.totalConsultations}">${stats.totalConsultations}</c:when>
                         <c:otherwise>0</c:otherwise>
                     </c:choose>
                 </span>
-                <span class="stat-label">Consultations</span>
-                <i class="fas fa-calendar-check" style="font-size: 2rem; color: #e74c3c; margin-top: 10px;"></i>
+                <span class="stat-label">Consultations Total</span>
+                <i class="fas fa-calendar-check" style="font-size: 2rem; color: #3498db; margin-top: 10px;"></i>
             </div>
-            <div class="stat-card departments">
+            <div class="stat-card reservees">
                 <span class="stat-number">
                     <c:choose>
-                        <c:when test="${not empty stats.totalDepartements}">${stats.totalDepartements}</c:when>
+                        <c:when test="${not empty stats.consultationsReservees}">${stats.consultationsReservees}</c:when>
                         <c:otherwise>0</c:otherwise>
                     </c:choose>
                 </span>
-                <span class="stat-label">Départements</span>
-                <i class="fas fa-building" style="font-size: 2rem; color: #f39c12; margin-top: 10px;"></i>
+                <span class="stat-label">Réservées</span>
+                <i class="fas fa-clock" style="font-size: 2rem; color: #f39c12; margin-top: 10px;"></i>
+            </div>
+            <div class="stat-card validees">
+                <span class="stat-number">
+                    <c:choose>
+                        <c:when test="${not empty stats.consultationsValidees}">${stats.consultationsValidees}</c:when>
+                        <c:otherwise>0</c:otherwise>
+                    </c:choose>
+                </span>
+                <span class="stat-label">Validées</span>
+                <i class="fas fa-check-circle" style="font-size: 2rem; color: #17a2b8; margin-top: 10px;"></i>
+            </div>
+            <div class="stat-card terminees">
+                <span class="stat-number">
+                    <c:choose>
+                        <c:when test="${not empty stats.consultationsTerminees}">${stats.consultationsTerminees}</c:when>
+                        <c:otherwise>0</c:otherwise>
+                    </c:choose>
+                </span>
+                <span class="stat-label">Terminées</span>
+                <i class="fas fa-flag-checkered" style="font-size: 2rem; color: #27ae60; margin-top: 10px;"></i>
             </div>
         </div>
 
-        <!-- Liste des patients -->
+        <!-- Liste des consultations -->
         <div class="content-card">
             <div class="table-header">
-                <h3><i class="fas fa-user-injured"></i> Liste des Patients</h3>
-                <a href="add-patient.jsp" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Nouveau Patient
+                <h3><i class="fas fa-list"></i> Liste des Consultations</h3>
+                <a href="consultations?action=new" class="btn btn-primary" style="margin-top: 10px;">
+                    <i class="fas fa-plus"></i> Nouvelle Consultation
                 </a>
             </div>
 
-            <!-- SUPPRIMEZ TOUTE RÉFÉRENCE À ${patients} DIRECTEMENT -->
-
-            <c:if test="${empty patients}">
+            <c:if test="${empty consultations}">
                 <div style="text-align: center; padding: 40px; color: #7f8c8d;">
-                    <i class="fas fa-user-injured" style="font-size: 3rem; margin-bottom: 20px;"></i>
-                    <p>Aucun patient trouvé dans la base de données.</p>
-                    <a href="add-patient.jsp" class="btn btn-primary" style="margin-top: 10px;">
-                        <i class="fas fa-plus"></i> Ajouter le premier patient
+                    <i class="fas fa-calendar-check" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                    <p>Aucune consultation trouvée dans la base de données.</p>
+                    <a href="consultations?action=new" class="btn btn-primary" style="margin-top: 10px;">
+                        <i class="fas fa-plus"></i> Créer la première consultation
                     </a>
                 </div>
             </c:if>
 
-            <c:if test="${not empty patients}">
+            <c:if test="${not empty consultations}">
                 <table>
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nom Complet</th>
-                        <th>Email</th>
-                        <th>Poids/Taille</th>
-                        <th>Consultations</th>
+                        <th>Consultation</th>
+                        <th>Date & Heure</th>
+                        <th>Statut</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="patient" items="${patients}">
+                    <c:forEach var="consultation" items="${consultations}">
                         <tr>
-                            <td><strong>#${patient.id}</strong></td>
                             <td>
-                                <div style="font-weight: 500;">
+                                <div class="consultation-info">
+                                    <div class="consultation-icon" style="background:
                                     <c:choose>
-                                        <c:when test="${not empty patient.prenom and not empty patient.nom}">
-                                            ${patient.prenom} ${patient.nom}
-                                        </c:when>
-                                        <c:otherwise>
-                                            Nom non défini
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <c:when test="${consultation.statut == 'TERMINEE'}">#27ae60</c:when>
+                                    <c:when test="${consultation.statut == 'VALIDEE'}">#17a2b8</c:when>
+                                    <c:when test="${consultation.statut == 'RESERVEE'}">#f39c12</c:when>
+                                    <c:when test="${consultation.statut == 'ANNULEE'}">#e74c3c</c:when>
+                                    <c:otherwise>#3498db</c:otherwise>
+                                    </c:choose>;">
+                                        <i class="fas
+                                            <c:choose>
+                                                <c:when test="${consultation.statut == 'TERMINEE'}">fa-flag-checkered</c:when>
+                                                <c:when test="${consultation.statut == 'VALIDEE'}">fa-check-circle</c:when>
+                                                <c:when test="${consultation.statut == 'RESERVEE'}">fa-clock</c:when>
+                                                <c:when test="${consultation.statut == 'ANNULEE'}">fa-times-circle</c:when>
+                                                <c:otherwise>fa-calendar-check</c:otherwise>
+                                            </c:choose>">
+                                        </i>
+                                    </div>
+                                    <div class="consultation-details">
+                                        <div class="consultation-title">
+                                            Consultation de Dr: ${consultation.docteur.nom}
+                                        </div>
+                                        <div class="consultation-meta">
+                                            <div class="consultation-meta-item">
+                                                <i class="fas fa-user-injured"></i>
+                                                <span>${consultation.patient.prenom} ${consultation.patient.nom}</span>
+                                            </div>
+                                            <div class="consultation-meta-item">
+                                                <i class="fas fa-user-md"></i>
+                                                <span>Dr. ${consultation.docteur.prenom} ${consultation.docteur.nom}</span>
+                                            </div>
+                                        </div>
+                                        <div class="consultation-participants">
+                                            <span class="participant-badge">
+                                                <i class="fas fa-door-open"></i> ${consultation.salle.nomSalle}
+                                            </span>
+                                            <c:if test="${not empty consultation.compteRendu}">
+                                                <span class="participant-badge" style="background: #e8f5e8; color: #2e7d32;">
+                                                    <i class="fas fa-file-medical"></i> Compte-rendu
+                                                </span>
+                                            </c:if>
+                                        </div>
+                                    </div>
                                 </div>
-                                <small style="color: #7f8c8d;">
-                                    <c:if test="${not empty patient.email}">${patient.email}</c:if>
-                                    <c:if test="${empty patient.email}">Email non défini</c:if>
-                                </small>
                             </td>
                             <td>
-                                <c:if test="${not empty patient.email}">${patient.email}</c:if>
-                                <c:if test="${empty patient.email}">-</c:if>
+                                <div class="date-badge">
+                                    <i class="fas fa-calendar-alt"></i>
+                                        ${consultation.date}
+                                    <i class="fas fa-clock" style="margin-left: 8px;"></i>
+                                        ${consultation.heure}
+                                </div>
                             </td>
                             <td>
-                                <span class="badge">
-                                    <c:if test="${not empty patient.poid}">${patient.poid} kg</c:if>
-                                    <c:if test="${empty patient.poid}">0 kg</c:if>
-                                </span>
-                                <span class="badge">
-                                    <c:if test="${not empty patient.taille}">${patient.taille} m</c:if>
-                                    <c:if test="${empty patient.taille}">0 m</c:if>
-                                </span>
-                            </td>
-                            <td>
-                                <span class="badge badge-success">
-                                    <c:choose>
-                                        <c:when test="${not empty patient.consultations}">
-                                            ${patient.consultations.size()} consult.
-                                        </c:when>
-                                        <c:otherwise>
-                                            0 consult.
-                                        </c:otherwise>
-                                    </c:choose>
-                                </span>
+                                <c:choose>
+                                    <c:when test="${consultation.statut == 'RESERVEE'}">
+                                        <span class="badge badge-warning">
+                                            <i class="fas fa-clock"></i> Réservée
+                                        </span>
+                                    </c:when>
+                                    <c:when test="${consultation.statut == 'VALIDEE'}">
+                                        <span class="badge badge-info">
+                                            <i class="fas fa-check-circle"></i> Validée
+                                        </span>
+                                    </c:when>
+                                    <c:when test="${consultation.statut == 'TERMINEE'}">
+                                        <span class="badge badge-success">
+                                            <i class="fas fa-flag-checkered"></i> Terminée
+                                        </span>
+                                    </c:when>
+                                    <c:when test="${consultation.statut == 'ANNULEE'}">
+                                        <span class="badge badge-danger">
+                                            <i class="fas fa-times-circle"></i> Annulée
+                                        </span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="badge badge-secondary">
+                                            <i class="fas fa-question-circle"></i> ${consultation.statut}
+                                        </span>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                             <td>
                                 <div class="actions">
-                                    <a href="patients?action=edit&id=${patient.id}" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.8rem;">
+                                    <a href="consultations?action=details&id=${consultation.idConsultation}"
+                                       class="btn btn-info" style="padding: 5px 10px; font-size: 0.8rem;">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="consultations?action=edit&id=${consultation.idConsultation}"
+                                       class="btn btn-primary" style="padding: 5px 10px; font-size: 0.8rem;">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="patients?action=delete&id=${patient.id}" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"
-                                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')">
+                                    <a href="consultations?action=updateStatus&id=${consultation.idConsultation}"
+                                       class="btn btn-warning" style="padding: 5px 10px; font-size: 0.8rem;">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </a>
+                                    <a href="consultations?action=delete&id=${consultation.idConsultation}"
+                                       class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"
+                                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette consultation ?')">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </div>
@@ -470,9 +609,10 @@
             </c:if>
         </div>
 
+        <!-- Consultations du jour -->
         <div class="content-card">
             <div class="table-header">
-                <h3><i class="fas fa-history"></i> Consultations d'Aujourd'hui</h3>
+                <h3><i class="fas fa-calendar-day"></i> Consultations d'Aujourd'hui</h3>
             </div>
             <div style="text-align: center; padding: 20px; color: #7f8c8d;">
 
@@ -534,7 +674,7 @@
 
         navLinks.forEach(link => {
             const linkPage = link.getAttribute('href');
-            if (linkPage === currentPage || (currentPage === '' && linkPage === 'dashboard-admin.jsp')) {
+            if (linkPage === currentPage || (currentPage === '' && linkPage === 'consultations')) {
                 link.classList.add('active');
             }
         });

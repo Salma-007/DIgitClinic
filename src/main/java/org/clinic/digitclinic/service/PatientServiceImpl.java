@@ -45,5 +45,10 @@ public class PatientServiceImpl implements PatientService {
         return patients;
     }
 
+    @Override
+    public Patient findByEmail(String email) {
+        return dao.findByEmail(email);
+    }
+
 
 }

@@ -38,4 +38,14 @@ public class ConsultationServiceImpl implements ConsultationService {
     public List<Consultation> findAll() {
         return dao.findAll();
     }
+
+    @Override
+    public List<Consultation> findByPatientId(Long patientId) {
+        try {
+            return dao.findByPatientId(patientId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
 }

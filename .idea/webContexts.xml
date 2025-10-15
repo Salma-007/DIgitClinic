@@ -4,9 +4,12 @@
     <option name="state">
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/views/admin/dashboard.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/admin" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/views/consultation/consultations.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/consultation" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/views/departement/departements.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/departement" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/views/login.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/views/patient/dashboard-patient.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/patient" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/views/patient/home.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/patient" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/views/patient/mes-consultations.jsp" value="file://$PROJECT_DIR$/src/main/webapp/views/patient" />
       </map>
     </option>
   </component>

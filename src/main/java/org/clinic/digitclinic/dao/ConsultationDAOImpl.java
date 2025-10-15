@@ -24,4 +24,24 @@ public class ConsultationDAOImpl extends GenericDAOImpl<Consultation> implements
             return query.getResultList();
         }
     }
+
+    @Override
+    public List<Consultation> findByPatientId(Long patientId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT c FROM Consultation c " +
+                    "LEFT JOIN FETCH c.patient " +
+                    "LEFT JOIN FETCH c.docteur " +
+                    "LEFT JOIN FETCH c.salle " +
+                    "WHERE c.patient.id = :patientId " +
+                    "ORDER BY c.date DESC, c.heure DESC";
+
+            Query<Consultation> query = session.createQuery(hql, Consultation.class);
+            query.setParameter("patientId", patientId);
+
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
 }

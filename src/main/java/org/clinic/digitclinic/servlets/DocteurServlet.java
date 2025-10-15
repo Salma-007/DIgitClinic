@@ -32,7 +32,6 @@ public class DocteurServlet extends HelloServlet {
 
         this.docteurService = new DocteurServiceImpl(docteurDAO);
         this.departementService = new DepartementServiceImpl(departementDAO);
-        System.out.println("✅ Service docteur initialisé avec succès !");
     }
 
     @Override
@@ -40,7 +39,6 @@ public class DocteurServlet extends HelloServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
-
         try {
             if (action == null) {
                 listDocteurs(request, response);
@@ -101,7 +99,7 @@ public class DocteurServlet extends HelloServlet {
 
         Map<String, Object> stats = new HashMap<>();
         stats.put("totalDocteurs", docteurs.size());
-        stats.put("docteursActifs", docteurs.size()); // Tous actifs par défaut
+        stats.put("docteursActifs", docteurs.size());
         stats.put("specialites", docteurs.stream().map(Docteur::getSpecialite).distinct().count());
         stats.put("consultationsTotal", docteurs.stream().mapToInt(d -> d.getPlanning() != null ? d.getPlanning().size() : 0).sum());
 
@@ -200,7 +198,6 @@ public class DocteurServlet extends HelloServlet {
             throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
 
-        // Vérifier si le docteur a des consultations
         Docteur docteur = docteurService.findById((long) id);
         if (docteur != null && docteur.getPlanning() != null && !docteur.getPlanning().isEmpty()) {
             response.sendRedirect("docteurs?error=Impossible de supprimer: le docteur a des consultations planifiées");

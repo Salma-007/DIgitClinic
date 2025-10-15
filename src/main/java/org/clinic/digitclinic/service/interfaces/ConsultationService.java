@@ -9,5 +9,5 @@ public interface ConsultationService {
     void delete(Long id);
     Consultation findById(Long id);
     List<Consultation> findAll();
-
+    List<Consultation> findByPatientId(Long patientId);
 }

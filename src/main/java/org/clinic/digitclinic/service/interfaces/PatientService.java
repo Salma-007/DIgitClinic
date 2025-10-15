@@ -9,4 +9,5 @@ public interface PatientService {
     void delete(Long id);
     Patient findById(Long id);
     List<Patient> findAllPatients();
+    Patient findByEmail(String email);
 }
