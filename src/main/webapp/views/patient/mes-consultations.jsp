@@ -70,6 +70,16 @@
       color: white;
     }
 
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: white;
+    }
+
     .consultations-container {
       background: white;
       border-radius: 15px;
@@ -127,6 +137,39 @@
       gap: 10px;
     }
 
+    .consultation-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      justify-content: flex-end;
+      padding-top: 15px;
+      border-top: 1px solid #ecf0f1;
+    }
+
+    .action-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .action-btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .action-btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
     .empty-state {
       text-align: center;
       padding: 40px;
@@ -179,7 +222,7 @@
         <i class="fas fa-calendar-times"></i>
         <h3>Aucune consultation</h3>
         <p>Vous n'avez pas encore de rendez-vous médical</p>
-        <a href="${pageContext.request.contextPath}/patient/new-consultation" class="btn btn-primary" style="margin-top: 20px;">
+        <a href="${pageContext.request.contextPath}/patient-space?action=new-consultation" class="btn btn-primary" style="margin-top: 20px;">
           <i class="fas fa-plus"></i> Prendre mon premier RDV
         </a>
       </div>
@@ -232,9 +275,59 @@
             </div>
           </c:if>
         </div>
+
+        <!-- Boutons d'action -->
+        <c:if test="${consultation.statut != 'ANNULEE' && consultation.statut != 'TERMINEE'}">
+          <div class="consultation-actions">
+            <!-- Bouton Modifier -->
+            <a href="${pageContext.request.contextPath}/patient-space?action=edit&id=${consultation.idConsultation}"
+               class="action-btn action-btn-primary">
+              <i class="fas fa-edit"></i> Modifier
+            </a>
+
+            <form action="${pageContext.request.contextPath}/patient-space?action=annuler&id=${consultation.idConsultation}" method="post"
+                  onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette consultation ? Cette action est irréversible.')"
+                  style="display: inline;">
+              <input type="hidden" name="action" value="cancel-consultation">
+              <input type="hidden" name="consultationId" value="${consultation.idConsultation}">
+              <button type="submit" class="action-btn action-btn-danger">
+                <i class="fas fa-ban"></i> Annuler
+              </button>
+            </form>
+          </div>
+        </c:if>
+
+
       </div>
     </c:forEach>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+    const cancelForms = document.querySelectorAll('form[action*="cancel-consultation"]');
+    cancelForms.forEach(form => {
+      form.addEventListener('submit', function(e) {
+        if (!confirm('⚠️ Êtes-vous absolument sûr de vouloir annuler cette consultation ? Cette action est définitive.')) {
+          e.preventDefault();
+        }
+      });
+    });
+
+    // Animation pour les boutons
+    const actionButtons = document.querySelectorAll('.action-btn');
+    actionButtons.forEach(button => {
+      button.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+      });
+      button.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = 'none';
+      });
+    });
+  });
+</script>
 </body>
 </html>

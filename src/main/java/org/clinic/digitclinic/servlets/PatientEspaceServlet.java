@@ -59,6 +59,10 @@ public class PatientEspaceServlet extends HttpServlet {
         try {
             if ("add-consultation".equals(action)) {
                 addConsultation(request, response, patient);
+            } else if ("update-consultation".equals(action)) {
+                updateConsultation(request, response, patient);
+            } else if ("annuler".equals(action)) {
+                cancelConsultation(request, response, patient);
             } else {
                 response.sendRedirect("patient-space?error=Action non valide");
             }
@@ -67,6 +71,7 @@ public class PatientEspaceServlet extends HttpServlet {
             response.sendRedirect("new-consultation?error=" + e.getMessage());
         }
     }
+
 
     private void addConsultation(HttpServletRequest request, HttpServletResponse response, Patient patient)
             throws IOException {
@@ -133,6 +138,9 @@ public class PatientEspaceServlet extends HttpServlet {
                 docteur.setPlanning(new ArrayList<>());
             }
             docteur.getPlanning().add(consultation);
+            if (salle.getCreneaux() == null) {
+                salle.setCreneaux(new ArrayList<>());
+            }
             salle.addCreneau(date);
 
             response.sendRedirect("patient-space/new-consultation?success=Consultation ajoutée avec succès");
@@ -171,6 +179,9 @@ public class PatientEspaceServlet extends HttpServlet {
                         break;
                     case "new-consultation":
                         showNewConsultationForm(request, response, patient);
+                        break;
+                    case "edit":
+                        showEditConsultationForm(request, response, patient);
                         break;
                     default:
                         showPatientHome(request, response, patient);
@@ -232,4 +243,142 @@ public class PatientEspaceServlet extends HttpServlet {
         request.getRequestDispatcher("/views/patient/nouvelle-consultation.jsp").forward(request, response);
     }
 
+    private void updateConsultation(HttpServletRequest request, HttpServletResponse response, Patient patient)
+            throws IOException {
+        try {
+            int consultationId = Integer.parseInt(request.getParameter("consultationId"));
+            LocalDate date = LocalDate.parse(request.getParameter("date"));
+            LocalTime heure = LocalTime.parse(request.getParameter("heure"));
+            int docteurId = Integer.parseInt(request.getParameter("docteurId"));
+            int salleId = Integer.parseInt(request.getParameter("salleId"));
+            String compteRendu = request.getParameter("compteRendu");
+
+            Consultation consultation = consultationService.findById((long) consultationId);
+
+            if (consultation == null || consultation.getPatient().getId() != patient.getId()) {
+                throw new ConsultationNotFoundException("Consultation non trouvée");
+            }
+
+            if (consultation.getStatut() == Statut.ANNULEE || consultation.getStatut() == Statut.TERMINEE) {
+                throw new IllegalStateException("Impossible de modifier une consultation " + consultation.getStatut());
+            }
+
+            Docteur docteur = docteurService.findById((long) docteurId);
+            Salle salle = salleService.findById((long) salleId);
+
+            if (docteur == null) throw new DocteurNotFoundException("Docteur introuvable");
+            if (salle == null) throw new SalleNotFoundException("Salle introuvable");
+
+            List<Consultation> consultationsExistantes = consultationService.findAll();
+
+            boolean docteurOccupe = consultationsExistantes.stream()
+                    .filter(c -> c.getDocteur().getId() == docteurId)
+                    .filter(c -> c.getDate().equals(date))
+                    .filter(c -> c.getHeure().equals(heure))
+                    .filter(c -> c.getStatut() != Statut.ANNULEE)
+                    .filter(c -> c.getIdConsultation() != consultationId)
+                    .findAny()
+                    .isPresent();
+
+            if (docteurOccupe) {
+                throw new DocteurOccupeException("Le docteur a déjà une consultation à " + heure);
+            }
+
+            boolean salleOccupee = consultationsExistantes.stream()
+                    .filter(c -> c.getSalle().getIdSalle() == salleId)
+                    .filter(c -> c.getDate().equals(date))
+                    .filter(c -> c.getHeure().equals(heure))
+                    .filter(c -> c.getStatut() != Statut.ANNULEE)
+                    .filter(c -> c.getIdConsultation() != consultationId)
+                    .findAny()
+                    .isPresent();
+
+            if (salleOccupee)
+                throw new SalleOccupeeException("La salle est déjà occupée à " + heure);
+
+            if (heure.getMinute() != 0 && heure.getMinute() != 30)
+                throw new HeureInvalideException("Les consultations doivent commencer à l'heure ou à la demi-heure");
+
+            if (heure.isBefore(LocalTime.of(9, 0)) || heure.isAfter(LocalTime.of(18, 0)))
+                throw new HeureInvalideException("Les consultations doivent être entre 9h00 et 18h00");
+
+            if (date.equals(LocalDate.now()) && heure.isBefore(LocalTime.now()))
+                throw new HeureInvalideException("Heure invalide, choisissez une heure valide");
+
+            consultation.setDate(date);
+            consultation.setHeure(heure);
+            consultation.setDocteur(docteur);
+            consultation.setSalle(salle);
+            consultation.setCompteRendu(compteRendu);
+
+            consultationService.update(consultation);
+
+            response.sendRedirect("patient-space?action=consultations&success=Consultation modifiée avec succès");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("patient-space?action=edit&id=" + request.getParameter("consultationId") +
+                    "&error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
+        }
+    }
+
+    private void cancelConsultation(HttpServletRequest request, HttpServletResponse response, Patient patient)
+            throws IOException {
+        try {
+            int consultationId = Integer.parseInt(request.getParameter("id"));
+
+            Consultation consultation = consultationService.findById((long) consultationId);
+
+            if (consultation == null || consultation.getPatient().getId() != patient.getId()) {
+                throw new ConsultationNotFoundException("Consultation non trouvée");
+            }
+
+            if (consultation.getStatut() == Statut.TERMINEE) {
+                throw new IllegalStateException("Impossible d'annuler une consultation terminée");
+            }
+
+            if (consultation.getStatut() == Statut.ANNULEE) {
+                throw new IllegalStateException("La consultation est déjà annulée");
+            }
+
+            consultation.setStatut(Statut.ANNULEE);
+            consultationService.update(consultation);
+
+            response.sendRedirect("patient-space?action=consultations&success=Consultation annulée avec succès");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("patient-space?action=consultations&error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
+        }
+    }
+
+    private void showEditConsultationForm(HttpServletRequest request, HttpServletResponse response, Patient patient)
+            throws ServletException, IOException {
+
+        try {
+            int consultationId = Integer.parseInt(request.getParameter("id"));
+
+            Consultation consultation = consultationService.findById((long) consultationId);
+
+            if (consultation == null || consultation.getPatient().getId() != patient.getId()) {
+                response.sendRedirect("patient-space?action=consultations&error=Consultation non trouvée");
+                return;
+            }
+
+            List<Docteur> docteurs = docteurService.findAll();
+            List<Salle> salles = salleService.findAll();
+
+            request.setAttribute("patient", patient);
+            request.setAttribute("consultation", consultation);
+            request.setAttribute("docteurs", docteurs);
+            request.setAttribute("salles", salles);
+            request.setAttribute("statuts", Statut.values());
+
+            request.getRequestDispatcher("/views/patient/modifier-consultation.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("patient-space?action=consultations&error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
+        }
+    }
 }

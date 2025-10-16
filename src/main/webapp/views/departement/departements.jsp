@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestion des Départements - Clinique Digitale</title>
   <style>
-    /* Reset et variables - Même style que dashboard */
     :root {
       --primary: #3498db;
       --secondary: #2c3e50;
@@ -487,7 +486,7 @@
               <td>
               <td>
                 <span class="badge badge-primary">
-                    0 médecin <!-- Temporairement fixé à 0 -->
+                    0 médecin
                 </span>
               </td>
               </td>

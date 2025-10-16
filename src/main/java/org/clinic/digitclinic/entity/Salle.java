@@ -20,7 +20,7 @@ public class Salle {
     @Column(nullable = false)
     private int capacite;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "salle_creneaux",
             joinColumns = @JoinColumn(name = "idsalle")
