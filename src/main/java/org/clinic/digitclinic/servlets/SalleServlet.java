@@ -90,9 +90,9 @@ public class SalleServlet extends HelloServlet {
 
         Map<String, Object> stats = new HashMap<>();
         stats.put("totalSalles", salles.size());
-        stats.put("sallesDisponibles", salles.stream().filter(s -> s.getCreneau() == null).count());
+        stats.put("sallesDisponibles", salles.stream().filter(s -> s.getCreneaux() == null).count());
         stats.put("capaciteTotale", salles.stream().mapToInt(Salle::getCapacite).sum());
-        stats.put("sallesOccupees", salles.stream().filter(s -> s.getCreneau() != null).count());
+        stats.put("sallesOccupees", salles.stream().filter(s -> s.getCreneaux() != null).count());
 
         request.setAttribute("salles", salles);
         request.setAttribute("stats", stats);
@@ -130,7 +130,7 @@ public class SalleServlet extends HelloServlet {
 
         if (creneauStr != null && !creneauStr.isEmpty()) {
             LocalDate creneau = LocalDate.parse(creneauStr);
-            salle.setCreneau(creneau);
+            salle.addCreneau(creneau);
         }
 
         salleService.save(salle);
@@ -153,9 +153,9 @@ public class SalleServlet extends HelloServlet {
 
             if (creneauStr != null && !creneauStr.isEmpty()) {
                 LocalDate creneau = LocalDate.parse(creneauStr);
-                salle.setCreneau(creneau);
+                salle.addCreneau(creneau);
             } else {
-                salle.setCreneau(null);
+                salle.addCreneau(null);
             }
 
             salleService.update(salle);

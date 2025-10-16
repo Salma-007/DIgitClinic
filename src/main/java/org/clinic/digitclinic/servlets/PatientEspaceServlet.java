@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/patient-space/*")
@@ -127,6 +128,13 @@ public class PatientEspaceServlet extends HttpServlet {
             consultation.setCompteRendu(compteRendu);
 
             consultationService.save(consultation);
+
+            if (docteur.getPlanning() == null) {
+                docteur.setPlanning(new ArrayList<>());
+            }
+            docteur.getPlanning().add(consultation);
+            salle.addCreneau(date);
+
             response.sendRedirect("patient-space/new-consultation?success=Consultation ajoutée avec succès");
 
         } catch (Exception e) {

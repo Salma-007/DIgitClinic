@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -35,6 +36,99 @@
         .admin-container {
             display: flex;
             min-height: 100vh;
+        }
+
+        /* Header amélioré */
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title h2 {
+            color: var(--secondary);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .page-title i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border-radius: 25px;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .user-profile {
+                padding: 8px;
+            }
         }
 
         /* Sidebar */
@@ -104,10 +198,14 @@
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 30px;
+        }
+
+        .header-content {
             display: flex;
-            justify-content: space-between; /* CORRIGÉ : between → space-between */
+            justify-content: space-between;
             align-items: center;
         }
+
 
         .header h2 {
             color: var(--secondary);
@@ -301,7 +399,7 @@
 </head>
 <body>
 <div class="admin-container">
-    <!-- Sidebar -->
+
     <nav class="sidebar">
         <div class="logo">
             <h1>Digit<span>Clinic</span></h1>
@@ -321,11 +419,27 @@
     <!-- Contenu principal -->
     <main class="main-content">
         <!-- Header -->
+        <!-- Header simple et stylé -->
         <div class="header">
-            <h2><i class="fas fa-tachometer-alt"></i> Tableau de Bord Administrateur</h2>
-            <div class="user-info">
-                <div class="user-avatar">A</div>
-                <span>Administrateur</span>
+            <div class="header-content">
+                <div class="page-title">
+                    <h2><i class="fas fa-tachometer-alt"></i> Tableau de Bord</h2>
+                </div>
+
+                <div class="header-actions">
+                    <div class="user-profile">
+                        <div class="user-avatar">
+                            <c:if test="${not empty admin.prenom}">
+                                ${fn:substring(admin.prenom, 0, 1)}${fn:substring(admin.nom, 0, 1)}
+                            </c:if>
+                        </div>
+                        <span class="user-name">${admin.prenom} ${admin.nom}</span>
+                    </div>
+
+                    <a href="${pageContext.request.contextPath}/login?logout=true" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -398,7 +512,6 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Nom Complet</th>
                         <th>Email</th>
                         <th>Poids/Taille</th>
@@ -409,7 +522,6 @@
                     <tbody>
                     <c:forEach var="patient" items="${patients}">
                         <tr>
-                            <td><strong>#${patient.id}</strong></td>
                             <td>
                                 <div style="font-weight: 500;">
                                     <c:choose>

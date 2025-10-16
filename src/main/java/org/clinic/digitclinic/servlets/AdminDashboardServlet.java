@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.clinic.digitclinic.dao.ConsultationDAOImpl;
 import org.clinic.digitclinic.dao.DepartementDAOImpl;
 import org.clinic.digitclinic.dao.DocteurDAOImpl;
@@ -16,6 +17,7 @@ import org.clinic.digitclinic.dao.interfaces.DocteurDAO;
 import org.clinic.digitclinic.dao.interfaces.PatientDAO;
 import org.clinic.digitclinic.entity.Consultation;
 import org.clinic.digitclinic.entity.Patient;
+import org.clinic.digitclinic.entity.Personne;
 import org.clinic.digitclinic.service.ConsultationServiceImpl;
 import org.clinic.digitclinic.service.DepartementServiceImpl;
 import org.clinic.digitclinic.service.DocteurServiceImpl;
@@ -52,6 +54,16 @@ public class AdminDashboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // getting the user authenticated
+        HttpSession session = request.getSession();
+        Personne user = (Personne) session.getAttribute("user");
+
+        if (user == null || !user.getRole().toString().equals("ADMIN")) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        Personne admin = (Personne) user;
         try {
             Map<String, Object> stats = new HashMap<>();
             stats.put("totalPatients", patientService.findAllPatients().size());
@@ -65,12 +77,13 @@ public class AdminDashboardServlet extends HttpServlet {
             request.setAttribute("consultations", consultations);
             request.setAttribute("stats", stats);
             request.setAttribute("patients", patients);
+            request.setAttribute("admin", admin);
 
             request.getRequestDispatcher("/views/admin/dashboard.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("error.jsp");
+            response.sendRedirect("dashboard-admin?error=" + e.getMessage());
         }
     }
 }

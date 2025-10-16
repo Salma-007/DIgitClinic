@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import org.clinic.digitclinic.entity.enums.Role;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "docteur")
@@ -18,7 +19,8 @@ public class Docteur extends Personne{
     @JoinColumn(name = "iddepartement", nullable = false)
     private Departement departement;
 
-    private ArrayList<Consultation> planning;
+    @OneToMany(mappedBy = "docteur", fetch = FetchType.EAGER)
+    private List<Consultation> planning = new ArrayList<>();
 
     public Docteur(int id, String nom, String prenom, String email, String mdp, String specialite, Departement departement, ArrayList<Consultation> planning) {
         super(id, nom, prenom, email, mdp, Role.DOCTEUR);
@@ -52,7 +54,7 @@ public class Docteur extends Personne{
         this.departement = departement;
     }
 
-    public ArrayList<Consultation> getPlanning() {
+    public List<Consultation> getPlanning() {
         return planning;
     }
 

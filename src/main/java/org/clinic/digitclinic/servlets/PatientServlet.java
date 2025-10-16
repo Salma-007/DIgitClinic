@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.clinic.digitclinic.dao.PatientDAOImpl;
 import org.clinic.digitclinic.dao.interfaces.PatientDAO;
 import org.clinic.digitclinic.entity.Patient;
+import org.clinic.digitclinic.entity.enums.Role;
 import org.clinic.digitclinic.service.PatientServiceImpl;
 
 import java.io.IOException;
@@ -140,6 +141,7 @@ public class PatientServlet extends HelloServlet {
         patient.setMdp(mdp);
         patient.setPoid(poid);
         patient.setTaille(taille);
+        patient.setRole(Role.PATIENT);
 
         patientService.save(patient);
         String contextPath = request.getContextPath();
@@ -175,7 +177,6 @@ public class PatientServlet extends HelloServlet {
             throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
 
-        // Vérifier si le patient a des consultations
         Patient patient = patientService.findById((long) id);
         if (patient != null && patient.getConsultationsCount() > 0) {
             response.sendRedirect("patients?error=Impossible de supprimer: le patient a des consultations");

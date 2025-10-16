@@ -186,11 +186,6 @@
                        min="1" max="50" placeholder="Nombre de personnes" required>
             </div>
 
-            <div class="form-group">
-                <label for="creneau"><i class="fas fa-calendar-alt"></i> Créneau réservé (optionnel)</label>
-                <input type="date" id="creneau" name="creneau" class="form-control">
-            </div>
-
             <div class="form-actions">
                 <a href="salles" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Retour

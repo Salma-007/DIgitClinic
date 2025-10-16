@@ -436,8 +436,6 @@
           <tr>
             <th>Salle</th>
             <th>Capacité</th>
-            <th>Créneau</th>
-            <th>Statut</th>
             <th>Actions</th>
           </tr>
           </thead>
@@ -476,34 +474,7 @@
                   ${salle.capacite} personnes
                 </span>
               </td>
-              <td>
-                <c:choose>
-                  <c:when test="${not empty salle.creneau}">
-                    <span class="badge badge-warning">
-                      <i class="fas fa-clock"></i> ${salle.creneau}
-                    </span>
-                  </c:when>
-                  <c:otherwise>
-                    <span class="badge badge-success">
-                      <i class="fas fa-check"></i> Libre
-                    </span>
-                  </c:otherwise>
-                </c:choose>
-              </td>
-              <td>
-                <c:choose>
-                  <c:when test="${not empty salle.creneau}">
-                    <span class="badge badge-danger">
-                      <i class="fas fa-times-circle"></i> Occupée
-                    </span>
-                  </c:when>
-                  <c:otherwise>
-                    <span class="badge badge-success">
-                      <i class="fas fa-check-circle"></i> Disponible
-                    </span>
-                  </c:otherwise>
-                </c:choose>
-              </td>
+
               <td>
                 <div class="actions">
                   <a href="salles?action=edit&id=${salle.idSalle}" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.8rem;">
