@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion - Clinique Digitale</title>
+  <title>Connexion - DigitClinic</title>
   <style>
     * {
       margin: 0;
@@ -221,18 +221,16 @@
 </head>
 <body>
 <div class="login-container">
-  <div class="clinic-badge">CLINIQUE DIGITALE</div>
 
   <div class="medical-icon">
     <i>🏥</i>
   </div>
 
   <div class="login-header">
-    <h1>Espace Médical</h1>
-    <p>Accédez à votre espace professionnel</p>
+    <h1>DigitClinic</h1>
+    <p>Accédez à votre compte</p>
   </div>
 
-  <!-- Messages d'erreur avec scriptlet Java -->
   <%
     String errorMessage = (String) request.getAttribute("error");
     String successMessage = (String) request.getAttribute("success");
@@ -252,7 +250,6 @@
   <% } %>
 
 
-  <!-- Afficher les messages des paramètres URL -->
   <div class="alert alert-error" id="urlErrorAlert" style="display: none;">
     ⚠️ Identifiant ou mot de passe incorrect
   </div>
@@ -288,27 +285,14 @@
 
     </div>
 
-    <div class="form-options">
-      <div class="remember-me">
-        <input type="checkbox" id="remember" name="remember">
-        <label for="remember">Se souvenir de moi</label>
-      </div>
-      <a href="forgot-password.jsp" class="forgot-password">Mot de passe oublié ?</a>
-    </div>
-
     <button type="submit" class="btn-login">
       🚪 Se connecter
     </button>
   </form>
 
-  <div class="login-footer">
-    <p>Première connexion ? <a href="activate-account.jsp">Activer votre compte</a></p>
-    <p><a href="support.jsp">Support technique</a> • <a href="guide.jsp">Guide d'utilisation</a></p>
-  </div>
 </div>
 
 <script>
-  // Gestion du sélecteur de type d'utilisateur
   document.querySelectorAll('.user-type-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       // Retirer la classe active de tous les boutons

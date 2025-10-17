@@ -48,4 +48,14 @@ public class ConsultationServiceImpl implements ConsultationService {
             return List.of();
         }
     }
+
+    @Override
+    public List<Consultation> findByDoctor(Long doctorId) {
+        try {
+            return dao.findByDocteur(doctorId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
 }
