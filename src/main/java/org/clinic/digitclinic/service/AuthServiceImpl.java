@@ -11,7 +11,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Personne login(String email, String motDePasse) {
 
-        if (email == null || motDePasse == null || email.isEmpty() || motDePasse.isEmpty()) {
+        if (email.isEmpty() || motDePasse.isEmpty()) {
             throw new IllegalArgumentException("Email et mot de passe sont obligatoires");
         }
 

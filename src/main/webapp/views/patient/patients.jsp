@@ -438,18 +438,16 @@
         </ul>
     </nav>
 
-    <!-- Contenu principal -->
     <main class="main-content">
         <!-- Header -->
         <div class="header">
             <h2><i class="fas fa-user-injured"></i> Gestion des Patients</h2>
             <div class="user-info">
                 <div class="user-avatar">A</div>
-                <span>Administrateur</span>
+                <span>admin</span>
             </div>
         </div>
 
-        <!-- Cartes de statistiques -->
         <div class="stats-grid">
             <div class="stat-card patients">
                 <span class="stat-number">
@@ -493,7 +491,6 @@
             </div>
         </div>
 
-        <!-- Liste des patients -->
         <div class="content-card">
             <div class="table-header">
                 <h3><i class="fas fa-list"></i> Liste des Patients</h3>

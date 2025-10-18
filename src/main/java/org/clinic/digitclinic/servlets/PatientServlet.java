@@ -5,9 +5,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.clinic.digitclinic.dao.PatientDAOImpl;
 import org.clinic.digitclinic.dao.interfaces.PatientDAO;
 import org.clinic.digitclinic.entity.Patient;
+import org.clinic.digitclinic.entity.Personne;
 import org.clinic.digitclinic.entity.enums.Role;
 import org.clinic.digitclinic.service.PatientServiceImpl;
 
@@ -84,8 +86,6 @@ public class PatientServlet extends HelloServlet {
 
     private void listPatients(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        System.out.println("📋 Récupération de la liste des patients...");
 
         List<Patient> patients = patientService.findAllPatients();
 

@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des Médecins - Clinique Digitale</title>
     <style>
-        /* Styles identiques à la page départements */
         :root {
             --primary: #3498db;
             --secondary: #2c3e50;
@@ -341,7 +340,6 @@
 </head>
 <body>
 <div class="admin-container">
-    <!-- Sidebar -->
     <nav class="sidebar">
         <div class="logo">
             <h1>Digit<span>Clinic</span></h1>
@@ -358,18 +356,15 @@
         </ul>
     </nav>
 
-    <!-- Contenu principal -->
     <main class="main-content">
-        <!-- Header -->
         <div class="header">
             <h2><i class="fas fa-user-md"></i> Gestion des Médecins</h2>
             <div class="user-info">
-                <div class="user-avatar">A</div>
-                <span>Administrateur</span>
+                <div class="user-avatar">a</div>
+                <span>admin</span>
             </div>
         </div>
 
-        <!-- Cartes de statistiques -->
         <div class="stats-grid">
             <div class="stat-card docteurs">
         <span class="stat-number">
@@ -413,7 +408,6 @@
             </div>
         </div>
 
-        <!-- Liste des docteurs -->
         <div class="content-card">
             <div class="table-header">
                 <h3><i class="fas fa-list"></i> Liste des Médecins</h3>

@@ -416,10 +416,7 @@
         </ul>
     </nav>
 
-    <!-- Contenu principal -->
     <main class="main-content">
-        <!-- Header -->
-        <!-- Header simple et stylé -->
         <div class="header">
             <div class="header-content">
                 <div class="page-title">
@@ -443,7 +440,6 @@
             </div>
         </div>
 
-        <!-- Cartes de statistiques -->
         <div class="stats-grid">
             <div class="stat-card patients">
                 <span class="stat-number">
@@ -487,16 +483,14 @@
             </div>
         </div>
 
-        <!-- Liste des patients -->
         <div class="content-card">
             <div class="table-header">
                 <h3><i class="fas fa-user-injured"></i> Liste des Patients</h3>
-                <a href="add-patient.jsp" class="btn btn-primary">
+                <a href="patients?action=new" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Nouveau Patient
                 </a>
             </div>
 
-            <!-- SUPPRIMEZ TOUTE RÉFÉRENCE À ${patients} DIRECTEMENT -->
 
             <c:if test="${empty patients}">
                 <div style="text-align: center; padding: 40px; color: #7f8c8d;">
@@ -586,15 +580,19 @@
             <div class="table-header">
                 <h3><i class="fas fa-history"></i> Consultations d'Aujourd'hui</h3>
             </div>
-            <div style="text-align: center; padding: 20px; color: #7f8c8d;">
 
-                <jsp:useBean id="now" class="java.util.Date" />
-                <fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="todayString"/>
+            <div style="text-align: center; padding: 20px; color: #7f8c8d;">
+                <!-- Utilisation de Java Time API directement -->
+                <%
+                    java.time.LocalDate today = java.time.LocalDate.now();
+                    request.setAttribute("today", today);
+                %>
 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 20px;">
                     <c:set var="hasConsultationsToday" value="false" />
+
                     <c:forEach var="consultation" items="${consultations}">
-                        <c:if test="${consultation.date.toString() == todayString}">
+                        <c:if test="${consultation.date == today}">
                             <c:set var="hasConsultationsToday" value="true" />
                             <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid
                             <c:choose>
@@ -604,33 +602,53 @@
                             <c:when test="${consultation.statut == 'ANNULEE'}">#e74c3c</c:when>
                             <c:otherwise>#3498db</c:otherwise>
                             </c:choose>;">
+
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                    <strong style="color: var(--secondary);">${consultation.heure}</strong>
+                                    <strong style="color: var(--secondary);">
+                                        <i class="fas fa-clock"></i> ${consultation.heure}
+                                    </strong>
                                     <span class="badge
-                                        <c:choose>
-                                            <c:when test="${consultation.statut == 'RESERVEE'}">badge-warning</c:when>
-                                            <c:when test="${consultation.statut == 'VALIDEE'}">badge-info</c:when>
-                                            <c:when test="${consultation.statut == 'TERMINEE'}">badge-success</c:when>
-                                            <c:when test="${consultation.statut == 'ANNULEE'}">badge-danger</c:when>
-                                            <c:otherwise>badge-secondary</c:otherwise>
-                                        </c:choose>"
+                                <c:choose>
+                                    <c:when test="${consultation.statut == 'RESERVEE'}">badge-warning</c:when>
+                                    <c:when test="${consultation.statut == 'VALIDEE'}">badge-info</c:when>
+                                    <c:when test="${consultation.statut == 'TERMINEE'}">badge-success</c:when>
+                                    <c:when test="${consultation.statut == 'ANNULEE'}">badge-danger</c:when>
+                                    <c:otherwise>badge-secondary</c:otherwise>
+                                </c:choose>"
                                           style="font-size: 0.7rem;">
                                             ${consultation.statut}
                                     </span>
                                 </div>
-                                <div style="font-size: 0.9rem;">
-                                    <div><strong>Patient:</strong> ${consultation.patient.prenom} ${consultation.patient.nom}</div>
-                                    <div><strong>Médecin:</strong> Dr. ${consultation.docteur.prenom} ${consultation.docteur.nom}</div>
-                                    <div><strong>Salle:</strong> ${consultation.salle.nomSalle}</div>
+
+                                <div style="font-size: 0.9rem; text-align: left;">
+                                    <div style="margin-bottom: 5px;">
+                                        <strong><i class="fas fa-user"></i> Patient:</strong>
+                                            ${consultation.patient.prenom} ${consultation.patient.nom}
+                                    </div>
+                                    <div style="margin-bottom: 5px;">
+                                        <strong><i class="fas fa-user-md"></i> Médecin:</strong>
+                                        Dr. ${consultation.docteur.prenom} ${consultation.docteur.nom}
+                                    </div>
+                                    <div style="margin-bottom: 5px;">
+                                        <strong><i class="fas fa-door-open"></i> Salle:</strong>
+                                            ${consultation.salle.nomSalle}
+                                    </div>
+                                    <c:if test="${not empty consultation.compteRendu}">
+                                        <div style="margin-top: 8px; padding: 8px; background: white; border-radius: 4px;">
+                                            <strong><i class="fas fa-notes-medical"></i> Notes:</strong><br>
+                                                ${consultation.compteRendu}
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
                         </c:if>
                     </c:forEach>
 
                     <c:if test="${not hasConsultationsToday}">
-                        <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #7f8c8d;">
-                            <i class="fas fa-calendar-times" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                            <p>Aucune consultation prévue pour aujourd'hui</p>
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #7f8c8d;">
+                            <i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 15px; color: #bdc3c7;"></i>
+                            <h4 style="color: #7f8c8d; margin-bottom: 10px;">Aucune consultation aujourd'hui</h4>
+                            <p style="color: #95a5a6;">Aucun rendez-vous n'est programmé pour aujourd'hui</p>
                         </div>
                     </c:if>
                 </div>

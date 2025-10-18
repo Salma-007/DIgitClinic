@@ -54,6 +54,7 @@ public class AdminDashboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         // getting the user authenticated
         HttpSession session = request.getSession();
         Personne user = (Personne) session.getAttribute("user");

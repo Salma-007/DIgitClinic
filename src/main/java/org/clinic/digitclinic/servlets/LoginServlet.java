@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
                 default -> response.sendRedirect("views/login.jsp");
             }
         } catch (RuntimeException e) {
-            request.setAttribute("error", e.getMessage());
+            request.setAttribute("login", e.getMessage());
             request.getRequestDispatcher("/views/login.jsp").forward(request, response);
         }
     }
