@@ -494,9 +494,9 @@
                 <span class="badge badge-purple">${departement.nom}</span>
               </td>
               <td>
-                                <span class="badge badge-success">
-                                    <i class="fas fa-check-circle"></i> Actif
-                                </span>
+                   <span class="badge badge-success">
+                    <i class="fas fa-check-circle"></i> Actif
+                   </span>
               </td>
               <td>
                 <div class="actions">

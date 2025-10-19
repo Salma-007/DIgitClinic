@@ -583,17 +583,9 @@
                             </td>
                             <td>
                                 <div class="actions">
-                                    <a href="consultations?action=details&id=${consultation.idConsultation}"
-                                       class="btn btn-info" style="padding: 5px 10px; font-size: 0.8rem;">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
                                     <a href="consultations?action=edit&id=${consultation.idConsultation}"
                                        class="btn btn-primary" style="padding: 5px 10px; font-size: 0.8rem;">
                                         <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a href="consultations?action=updateStatus&id=${consultation.idConsultation}"
-                                       class="btn btn-warning" style="padding: 5px 10px; font-size: 0.8rem;">
-                                        <i class="fas fa-sync-alt"></i>
                                     </a>
                                     <a href="consultations?action=delete&id=${consultation.idConsultation}"
                                        class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"

@@ -596,12 +596,6 @@
                                     <a href="patients?action=edit&id=${patient.id}" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.8rem;">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="patients?action=consultations&id=${patient.id}" class="btn btn-success" style="padding: 5px 10px; font-size: 0.8rem;">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </a>
-                                    <a href="patients?action=details&id=${patient.id}" class="btn btn-warning" style="padding: 5px 10px; font-size: 0.8rem;">
-                                        <i class="fas fa-info-circle"></i>
-                                    </a>
                                     <a href="patients?action=delete&id=${patient.id}" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"
                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')">
                                         <i class="fas fa-trash"></i>

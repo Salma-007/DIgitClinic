@@ -490,12 +490,6 @@
                                     <a href="docteurs?action=edit&id=${docteur.id}" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.8rem;">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="docteurs?action=planning&id=${docteur.id}" class="btn btn-success" style="padding: 5px 10px; font-size: 0.8rem;">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </a>
-                                    <a href="docteurs?action=details&id=${docteur.id}" class="btn btn-warning" style="padding: 5px 10px; font-size: 0.8rem;">
-                                        <i class="fas fa-info-circle"></i>
-                                    </a>
                                     <a href="docteurs?action=delete&id=${docteur.id}" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"
                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce médecin ?')">
                                         <i class="fas fa-trash"></i>
