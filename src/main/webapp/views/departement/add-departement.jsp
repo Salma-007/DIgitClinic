@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nouveau Département - Clinique Digitale</title>
   <style>
-    /* Reset et variables */
     :root {
       --primary: #3498db;
       --secondary: #2c3e50;

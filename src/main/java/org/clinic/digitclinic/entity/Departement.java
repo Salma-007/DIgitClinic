@@ -15,7 +15,7 @@ public class Departement {
     @Column(nullable = false, unique = true)
     private String nom;
 
-    @OneToMany(mappedBy = "departement", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "departement", fetch = FetchType.EAGER)
     private List<Docteur> docteurs = new ArrayList<>();
 
     public Departement() {

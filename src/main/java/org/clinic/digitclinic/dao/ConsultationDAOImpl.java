@@ -44,4 +44,18 @@ public class ConsultationDAOImpl extends GenericDAOImpl<Consultation> implements
             return List.of();
         }
     }
+
+    @Override
+    public int countByPatientId(Long patientId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT COUNT(c) FROM Consultation c WHERE c.patient.id = :patientId";
+            Long count = session.createQuery(hql, Long.class)
+                    .setParameter("patientId", patientId)
+                    .uniqueResult();
+            return count != null ? count.intValue() : 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

@@ -95,9 +95,7 @@ public class PatientEspaceServlet extends HttpServlet {
                     .filter(c -> c.getDocteur().getId() == docteurId)
                     .filter(c -> c.getDate().equals(date))
                     .filter(c -> c.getHeure().equals(heure))
-                    .filter(c -> c.getStatut() != Statut.ANNULEE)
-                    .findAny()
-                    .isPresent();
+                    .anyMatch(c -> c.getStatut() != Statut.ANNULEE);
 
             if (docteurOccupe) {
                 throw new DocteurOccupeException("Le docteur a déjà une consultation à " + heure);
@@ -107,9 +105,7 @@ public class PatientEspaceServlet extends HttpServlet {
                     .filter(c -> c.getSalle().getIdSalle() == salleId)
                     .filter(c -> c.getDate().equals(date))
                     .filter(c -> c.getHeure().equals(heure))
-                    .filter(c -> c.getStatut() != Statut.ANNULEE)
-                    .findAny()
-                    .isPresent();
+                    .anyMatch(c -> c.getStatut() != Statut.ANNULEE);
 
             if (salleOccupee)
                 throw new SalleOccupeeException("La salle est déjà occupée à " + heure);
@@ -276,9 +272,7 @@ public class PatientEspaceServlet extends HttpServlet {
                     .filter(c -> c.getDate().equals(date))
                     .filter(c -> c.getHeure().equals(heure))
                     .filter(c -> c.getStatut() != Statut.ANNULEE)
-                    .filter(c -> c.getIdConsultation() != consultationId)
-                    .findAny()
-                    .isPresent();
+                    .anyMatch(c -> c.getIdConsultation() != consultationId);
 
             if (docteurOccupe) {
                 throw new DocteurOccupeException("Le docteur a déjà une consultation à " + heure);
@@ -289,9 +283,7 @@ public class PatientEspaceServlet extends HttpServlet {
                     .filter(c -> c.getDate().equals(date))
                     .filter(c -> c.getHeure().equals(heure))
                     .filter(c -> c.getStatut() != Statut.ANNULEE)
-                    .filter(c -> c.getIdConsultation() != consultationId)
-                    .findAny()
-                    .isPresent();
+                    .anyMatch(c -> c.getIdConsultation() != consultationId);
 
             if (salleOccupee)
                 throw new SalleOccupeeException("La salle est déjà occupée à " + heure);

@@ -25,6 +25,7 @@ import org.clinic.digitclinic.service.PatientServiceImpl;
 import org.clinic.digitclinic.util.HibernateUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,6 @@ public class AdminDashboardServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // getting the user authenticated
         HttpSession session = request.getSession();
         Personne user = (Personne) session.getAttribute("user");
 
@@ -74,6 +74,11 @@ public class AdminDashboardServlet extends HttpServlet {
 
             List<Consultation> consultations = consultationService.findAll();
             List<Patient> patients = patientService.findAllPatients();
+
+            for (Patient patient : patients) {
+                List<Consultation> consultationsPatient = consultationService.findByPatientId((long) patient.getId());
+                patient.setConsultations((ArrayList<Consultation>) consultationsPatient);
+            }
 
             request.setAttribute("consultations", consultations);
             request.setAttribute("stats", stats);

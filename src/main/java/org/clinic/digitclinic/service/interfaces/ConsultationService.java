@@ -11,4 +11,5 @@ public interface ConsultationService {
     List<Consultation> findAll();
     List<Consultation> findByPatientId(Long patientId);
     List<Consultation> findByDoctor(Long doctorId);
+    int countByPatientId(Long patientId);
 }

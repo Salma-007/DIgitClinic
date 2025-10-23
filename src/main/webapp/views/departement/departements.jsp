@@ -394,16 +394,7 @@
         <span class="stat-label">Médecins Actifs</span>
         <i class="fas fa-user-md" style="font-size: 2rem; color: #27ae60; margin-top: 10px;"></i>
       </div>
-      <div class="stat-card consultations">
-                <span class="stat-number">
-                    <c:choose>
-                      <c:when test="${not empty stats.consultationsMois}">${stats.consultationsMois}</c:when>
-                      <c:otherwise>0</c:otherwise>
-                    </c:choose>
-                </span>
-        <span class="stat-label">Consultations/Mois</span>
-        <i class="fas fa-calendar-check" style="font-size: 2rem; color: #e74c3c; margin-top: 10px;"></i>
-      </div>
+
       <div class="stat-card specialites">
                 <span class="stat-number">
                     <c:choose>
@@ -440,8 +431,6 @@
           <thead>
           <tr>
             <th>Département</th>
-            <th>Médecins</th>
-            <th>Spécialités</th>
             <th>Statut</th>
             <th>Actions</th>
           </tr>
@@ -484,11 +473,12 @@
                 </div>
               </td>
               <td>
-              <td>
                 <span class="badge badge-primary">
-                    0 médecin
+                  <c:choose>
+                    <c:when test="${not empty departement.docteurs}">${departement.docteurs.size()} médecin(s)</c:when>
+                    <c:otherwise>0 médecin</c:otherwise>
+                  </c:choose>
                 </span>
-              </td>
               </td>
               <td>
                 <span class="badge badge-purple">${departement.nom}</span>
@@ -519,7 +509,6 @@
       </c:if>
     </div>
 
-    <!-- Départements populaires -->
     <div class="content-card">
       <div class="table-header">
         <h3><i class="fas fa-chart-line"></i> Départements les plus Actifs</h3>
@@ -556,7 +545,6 @@
 </div>
 
 <script>
-  // Script pour le menu actif
   document.addEventListener('DOMContentLoaded', function() {
     const currentPage = window.location.pathname.split('/').pop();
     const navLinks = document.querySelectorAll('.nav-links a');

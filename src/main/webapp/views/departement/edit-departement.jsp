@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier Département - Clinique Digitale</title>
     <style>
-        /* Même CSS que votre page départements */
         :root {
             --primary: #3498db;
             --secondary: #2c3e50;

@@ -16,6 +16,7 @@ import org.clinic.digitclinic.service.DocteurServiceImpl;
 import org.clinic.digitclinic.util.HibernateUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,6 @@ public class DepartementServlet extends HelloServlet {
         this.departementService = new DepartementServiceImpl(departementDAO);
         this.docteurService = new DocteurServiceImpl(docteurDAO);
 
-        System.out.println("✅ Service département initialisé avec succès !");
     }
 
     @Override
@@ -66,7 +66,7 @@ public class DepartementServlet extends HelloServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("error.jsp?message=" + e.getMessage());
+            response.sendRedirect("departement.jsp?message=" + e.getMessage());
         }
     }
 
@@ -93,14 +93,11 @@ public class DepartementServlet extends HelloServlet {
     private void listDepartements(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("📋 Récupération de la liste des départements...");
-
         List<Departement> departements = departementService.findAll();
 
         Map<String, Object> stats = new HashMap<>();
         stats.put("totalDepartements", departements.size());
         stats.put("totalDocteurs", docteurService.findAll().size());
-        stats.put("consultationsMois", 125); // Exemple
 
         request.setAttribute("departements", departements);
         request.setAttribute("stats", stats);
@@ -170,8 +167,6 @@ public class DepartementServlet extends HelloServlet {
 
         Long id = Long.parseLong(request.getParameter("id"));
 
-        System.out.println("🗑️ Suppression du département ID: " + id);
-
         List<Docteur> docteurs = departementService.findByDepartementId(id);
 
         if (docteurs != null && !docteurs.isEmpty()) {
@@ -187,13 +182,26 @@ public class DepartementServlet extends HelloServlet {
     private void showDocteursByDepartement(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Long departementId = Long.parseLong(request.getParameter("id"));
-        Departement departement = departementService.findById(departementId);
-        List<Docteur> docteurs = departementService.findByDepartementId(departementId);
+        try {
+            Long departementId = Long.parseLong(request.getParameter("id"));
+            Departement departement = departementService.findById(departementId);
 
-        request.setAttribute("departement", departement);
-        request.setAttribute("docteurs", docteurs);
+            if (departement == null) {
+                response.sendRedirect("departements?error=Département non trouvé");
+                return;
+            }
 
-        request.getRequestDispatcher("/docteurs-departement.jsp").forward(request, response);
+            List<Docteur> docteurs = departement.getDocteurs();
+
+            request.setAttribute("departement", departement);
+            request.setAttribute("docteurs", docteurs != null ? docteurs : new ArrayList<>());
+
+            request.getRequestDispatcher("/views/departement/docteurs-departement.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            response.sendRedirect("departements?error=ID de département invalide");
+        }
     }
+
+
 }

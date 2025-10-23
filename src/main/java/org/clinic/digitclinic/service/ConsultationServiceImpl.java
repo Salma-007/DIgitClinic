@@ -58,4 +58,9 @@ public class ConsultationServiceImpl implements ConsultationService {
             return List.of();
         }
     }
+
+    @Override
+    public int countByPatientId(Long patientId) {
+        return dao.countByPatientId(patientId);
+    }
 }
